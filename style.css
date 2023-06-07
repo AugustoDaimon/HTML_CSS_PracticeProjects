@@ -1,0 +1,95 @@
+.principal {
+    background-color: antiquewhite;
+    display: flex;
+    align-items: center; /* Vertically center items */
+    justify-content: center; /* Horizontally center items */
+    height: 100vh; /* Set the height of the container */
+    font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.outerBox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 50%;
+    height: 70%;
+    background-color: aliceblue;
+    border-radius: 30px;
+}
+
+.leftBox {
+    padding: 30px 0;
+    background-color: rgb(98, 0, 255);
+    color: white;
+    border-radius: 30px;
+    text-align: center;
+}
+
+.leftBox h3 {
+    color: #dadada;
+    font-weight: bolder;
+    font-size: 1.8vw;
+}
+
+.showValueScore {
+    border-radius: 100%;
+    background-color: blueviolet;
+    width: 65%;
+    padding-top: 65%;
+    position: relative;
+    margin: 20px auto;
+    vertical-align: middle;
+}
+
+.textScore {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    bottom: 50%;
+    right: 0;
+    font-weight: bolder;
+    font-size: 6vw;
+}
+
+.showValueScore p {
+    position: absolute;
+    top: 70%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    font-size: 1.5vw;
+    font-weight: bolder;
+}
+
+.leftBox h2 {
+    color: #f0f0f0;
+    font-weight: bolder;
+    font-size: 2.4vw;
+    margin-bottom: 0.8vw;
+}
+
+.detailCompareScore {
+    margin: auto;
+    width: 55%;
+}
+
+.rightBox {
+    padding: 30px;
+}
+
+.rightBox h1 {
+    font-weight: bolder;
+    color: black;
+    font-size: 1.8vw;
+}
+
+.rightBox ul {
+    margin: auto;
+}
+
+.rightBox li {
+    margin: 2px;
+    padding: 10px;
+}
+
+.attribution { font-size: 11px; text-align: center; }
+.attribution a { color: hsl(228, 45%, 44%); }
