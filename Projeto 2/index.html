@@ -8,12 +8,97 @@
         <link rel="stylesheet" type="text/css" href="style.css">
 
 
-        <title>Pratica com javascript</title>
+        <title>Simulação Interativa de Soma de Dois Vetores</title>
     </head>
     <body>
-        
         <canvas width="800" height="600"></canvas>
-        <script src="script.js"></script>
+        
+        <div class="panel">
+            <h1>Simulação Interativa</h1>
+            <h1>Soma de Dois Vetores</h1>
+            <hr>
+            <br>
+            <div class="vectorPanel">
+                <p class="vectorTitle">Vector a&#8407</p>
+                <div class="vectorDetailsPanel"> 
+                    <div class="vectorDetail"> 
+                        X:
+                        <input id="BlueVectorX" type="text" class="vectorDetailsInput" value="0">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        Y:
+                        <input id="BlueVectorY" type="text" class="vectorDetailsInput" value="100">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        M:
+                        <input id="BlueVectorMagnitude" type="text" class="vectorDetailsInput" value="100">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        &#8736:
+                        <input id="BlueVectorAngle" type="text" class="vectorDetailsInput" value="90">
+                        º
+                    </div>                       
+                </div>
+            </div>
 
+            <div class="vectorPanel">
+                <p class="vectorTitle">Vector b&#8407</p>
+                <div class="vectorDetailsPanel"> 
+                    <div class="vectorDetail"> 
+                        X:
+                        <input id="OrangeVectorX" type="text" class="vectorDetailsInput" value="0">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        Y:
+                        <input id="OrangeVectorY" type="text" class="vectorDetailsInput" value="100">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        M:
+                        <input id="OrangeVectorMagnitude" type="text" class="vectorDetailsInput" value="100">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        &#8736:
+                        <input id="OrangeVectorAngle" type="text" class="vectorDetailsInput" value="90">
+                        º
+                    </div>                       
+                </div>
+            </div>
+
+            <div class="vectorPanel">
+                <p class="vectorTitle">Vector r&#8407 (Resultante)</p>
+                <div class="vectorDetailsPanel"> 
+                    <div class="vectorDetail"> 
+                        X:
+                        <input id="ResultantVectorX" type="text" class="vectorDetailsInput" value="0">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        Y:
+                        <input id="ResultantVectorY" type="text" class="vectorDetailsInput" value="100">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        M:
+                        <input id="ResultantVectorMagnitude" type="text" class="vectorDetailsInput" value="100">
+                        px
+                    </div>
+                    <div class="vectorDetail"> 
+                        &#8736:
+                        <input id="ResultantVectorAngle" type="text" class="vectorDetailsInput" value="90">
+                        º
+                    </div>                       
+                </div>
+            </div>
+            <div class="attribution">
+                <p>Site made by <a>DaimonSsk</a></p>
+            </div>
+        </div>
+        <script src="script.js"></script>
     </body>
 </html>

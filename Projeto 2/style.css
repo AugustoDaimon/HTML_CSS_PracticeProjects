@@ -1,3 +1,72 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 canvas {
+    margin: 20px 0 0 20px;
+}
+
+.panel {
+    position:relative;
+
     margin: 20px;
+    padding: 20px 20px 10px;
+    height: 570px;
+    max-width: 400px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px 1px rgb(145, 145, 145);
+}
+
+.panel h1 {
+    font-size: 30px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.vectorPanel {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.vectorPanel:nth-of-type(1) {
+    background-color: rgb(150, 150, 253);
+}
+
+.vectorPanel:nth-of-type(2) {
+    background-color: rgb(255, 178, 126);
+}
+
+.vectorPanel:nth-of-type(3) {
+    background-color: rgb(130, 255, 126);
+}
+
+.vectorTitle {
+    font-weight: bolder;
+    font-size: large;
+    margin-bottom: 10px;
+}
+
+.vectorDetailsPanel {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 10px;
+}
+
+.vectorDetail {
+    display: inline;
+}
+
+.vectorDetailsInput {
+    width: 40px;
+}
+
+.attribution {
+    position:absolute;
+    bottom:0;
+    right: 0;
+    margin-bottom: 15px;
+    margin-right: 40px;
 }

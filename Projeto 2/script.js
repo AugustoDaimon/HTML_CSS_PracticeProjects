@@ -3,6 +3,22 @@
 var screen = document.querySelector('canvas');
 var pencil = screen.getContext('2d');
 
+var blueVectorX = document.getElementById('BlueVectorX');
+var blueVectorY = document.getElementById('BlueVectorY');
+var blueVectorMagnitude = document.getElementById('BlueVectorMagnitude');
+var blueVectorAngle = document.getElementById('BlueVectorAngle');
+
+var orangeVectorY = document.getElementById('OrangeVectorY');
+var orangeVectorX = document.getElementById('OrangeVectorX');
+var orangeVectorMagnitude = document.getElementById('OrangeVectorMagnitude');
+var orangeVectorAngle = document.getElementById('OrangeVectorAngle');
+
+var resultantVectorY = document.getElementById('ResultantVectorY');
+var resultantVectorX = document.getElementById('ResultantVectorX');
+var resultantVectorMagnitude = document.getElementById('ResultantVectorMagnitude');
+var resultantVectorAngle = document.getElementById('ResultantVectorAngle');
+
+
 var HalfScreenWidth = screen.width/2;
 var HalfScreenHeight = screen.height/2;
 
@@ -96,22 +112,40 @@ function resetScreen() {
     drawGrid(pencil, gridSpace, screen.width, screen.height);
 }
 
+
+var relPosBlueArrowX, relPosBlueArrowY, relMagnitudeBlueArrow, relAngleBlueArrow;
+var relPosOrangeArrowX, relPosOrangeArrowY, relMagnitudeOrangeArrow,  relAngleOrangeArrow;
+var relPosResultantX, relPosResultantY, relMagnitudeResultant, relAngleResultant;
+
 function calculateVectors(){
     relPosBlueArrowX = BlueArrowX - HalfScreenWidth;
     relPosBlueArrowY = HalfScreenHeight - BlueArrowY;
-
+    relMagnitudeBlueArrow = Math.sqrt(Math.pow(relPosBlueArrowX,2) + Math.pow(relPosBlueArrowY,2))
     relAngleBlueArrow = Math.atan2(relPosBlueArrowY, relPosBlueArrowX) * 180 / Math.PI;
-
+    blueVectorMagnitude.value = relMagnitudeBlueArrow.toString();
+    blueVectorAngle.value = relAngleBlueArrow.toString();
+    blueVectorX.value = relPosBlueArrowX.toString();
+    blueVectorY.value = relPosBlueArrowY.toString();
+    
     relPosOrangeArrowX = OrangeArrowX - HalfScreenWidth;
     relPosOrangeArrowY = HalfScreenHeight - OrangeArrowY;
-
+    relMagnitudeOrangeArrow = Math.sqrt(Math.pow(relPosOrangeArrowX,2) + Math.pow(relPosOrangeArrowY,2))
     relAngleOrangeArrow = Math.atan2(relPosOrangeArrowY, relPosOrangeArrowX) * 180 / Math.PI;
+    orangeVectorMagnitude.value = relMagnitudeOrangeArrow.toString();
+    orangeVectorAngle.value = relAngleOrangeArrow.toString();
+    orangeVectorX.value = relPosOrangeArrowX.toString();
+    orangeVectorY.value = relPosOrangeArrowY.toString();
+}
 
-    resultantVectorX = relPosBlueArrowX + relPosOrangeArrowX + HalfScreenWidth;
-    resultantVectorY = HalfScreenHeight - relPosBlueArrowY - relPosOrangeArrowY;
-
-    resultantVectorValue = Math.sqrt(Math.pow(resultantVectorX,2) + Math.pow(resultantVectorY,2))
-    resultantVectorAngle = Math.atan2(resultantVectorY, resultantVectorX) * 180 / Math.PI;
+function calculateResultant() {
+    relPosResultantX = resultantX - HalfScreenWidth;
+    relPosResultantY = HalfScreenHeight - resultantY;
+    relMagnitudeResultant = Math.sqrt(Math.pow(relPosResultantX,2) + Math.pow(relPosResultantY,2))
+    relAngleResultant = Math.atan2(relPosResultantY, relPosResultantX) * 180 / Math.PI;
+    resultantVectorMagnitude.value = relMagnitudeResultant.toString();
+    resultantVectorAngle.value = relAngleResultant.toString();
+    resultantVectorX.value = relPosResultantX.toString();
+    resultantVectorY.value = relPosResultantY.toString();
 }
 
 drawScreen(pencil);
@@ -120,6 +154,7 @@ drawGrid(pencil, gridSpace, screen.width, screen.height);
 
 var BlueArrowX = HalfScreenWidth + 0;
 var BlueArrowY = HalfScreenHeight - 100;
+
 drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, BlueArrowX, BlueArrowY, 'blue');
 
 var OrangeArrowX = HalfScreenWidth + 100;
@@ -128,28 +163,18 @@ drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, OrangeArrowX, OrangeArrowY,
 
 drawCenterDot(pencil);
 
-var relPosBlueArrowX = BlueArrowX - HalfScreenWidth;
-var relPosBlueArrowY = HalfScreenHeight - BlueArrowY;
-
-var relAngleBlueArrow = Math.atan2(relPosBlueArrowY, relPosBlueArrowX) * 180 / Math.PI;
-
-var relPosOrangeArrowX = OrangeArrowX - HalfScreenWidth;
-var relPosOrangeArrowY = HalfScreenHeight - OrangeArrowY;
-
-var relAngleOrangeArrow = Math.atan2(relPosOrangeArrowY, relPosOrangeArrowX) * 180 / Math.PI;
-
-var resultantVectorX = relPosBlueArrowX + relPosOrangeArrowX + HalfScreenWidth;
-var resultantVectorY = HalfScreenHeight - relPosBlueArrowY + relPosOrangeArrowY;
-
-var resultantVectorValue = Math.sqrt(Math.pow(resultantVectorX,2) + Math.pow(resultantVectorY,2))
-var relAngleOrangeArrow = Math.atan2(resultantVectorY, resultantVectorX) * 180 / Math.PI;
-
-drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, resultantVectorX, resultantVectorY, 'green');
-
 var holdMouse = false;
 
 var onBlueArrow = false;
 var onOrangeArrow = false;
+
+var resultantX = HalfScreenWidth + 100;
+var resultantY = HalfScreenHeight - 100;
+
+calculateVectors();
+calculateResultant()
+
+drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, resultantX, resultantY, 'green');
 
 screen.onmousedown = function(e) {
     var x = e.pageX - screen.offsetLeft;
@@ -189,13 +214,16 @@ function changeArrows(e) {
                 OrangeArrowY = y;
             }
         }
-
+        
         resetScreen();
         drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, BlueArrowX, BlueArrowY, 'blue');
         drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, OrangeArrowX, OrangeArrowY, 'orange');
         drawCenterDot(pencil);
         calculateVectors();
-        drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, resultantVectorX, resultantVectorY, 'green');
+        resultantX = HalfScreenWidth + relPosBlueArrowX + relPosOrangeArrowX;
+        resultantY = HalfScreenHeight - relPosBlueArrowY + relPosOrangeArrowY;
+        calculateResultant();
+        drawArrow(pencil, HalfScreenWidth, HalfScreenHeight, resultantX, resultantY, 'green');
     }
 }
 
