@@ -23,11 +23,11 @@ class grid {
         this.context = context;
 
         this.gridSlots = new Array(7);
-    
+
         for (var i = 0; i < this.gridSlots.length; i++) {
             this.gridSlots[i] = new Array(6);
         }
-    
+
         for (let c = 0; c < 7; c++) {
             for (let r = 0; r < 6; r++) {
                 this.gridSlots[c][r] = new slot(c, r, this.marginX, this.marginY, this.size, this.space, this.context);
@@ -57,12 +57,12 @@ class slot {
     }
 
     drawSlot() {
-        if(this.occupiedBy == null) {
+        if (this.occupiedBy == null) {
             this.context.fillStyle = '#949494';
-        }else{
-            if(this.occupiedBy == 'Red') {
+        } else {
+            if (this.occupiedBy == 'Red') {
                 this.context.fillStyle = 'Red';
-            }else {
+            } else {
                 this.context.fillStyle = '#949494';
             }
         }
@@ -84,47 +84,73 @@ spaceBetween = 15;
 var gameGrid = new grid(horizontalMargin, verticalMargin, slotSize, spaceBetween, pencil);
 generateScreen(gameGrid);
 
+var selectedSlot = -1;
 
 function mouseIsInGrid(evento) {
-    var x = evento.pageX - screen.offsetLeft + screen.width/2;
-    var y = evento.pageY - screen.offsetTop + screen.height/2;
+    var x = evento.pageX - screen.offsetLeft + screen.width / 2;
+    var y = evento.pageY - screen.offsetTop + screen.height / 2;
     //console.log(x,y);
 
-    if( (x > horizontalMargin) && (x < screen.width-horizontalMargin) &&
-        (y > verticalMargin) && (y < screen.height-verticalMargin)){
+    if ((x > horizontalMargin) && (x < screen.width - horizontalMargin) &&
+        (y > verticalMargin) && (y < screen.height - verticalMargin)) {
 
         for (let c = 0; c < 7; c++) {
-            if((x > (gameGrid.gridSlots[c][5].centerX - gameGrid.gridSlots[c][5].radius)) && 
-               (x < (gameGrid.gridSlots[c][5].centerX + gameGrid.gridSlots[c][5].radius))) {
+            if ((x > (gameGrid.gridSlots[c][5].centerX - gameGrid.gridSlots[c][5].radius)) &&
+                (x < (gameGrid.gridSlots[c][5].centerX + gameGrid.gridSlots[c][5].radius))) {
 
                 gameGrid.gridSlots[c][5].occupiedBy = 'Red';
                 generateScreen(gameGrid);
-            } else{
+                selectedSlot = c;
+            } else {
                 gameGrid.gridSlots[c][5].occupiedBy = 'null';
                 generateScreen(gameGrid);
             }
         }
-    }else {
+    } else {
         for (let c = 0; c < 7; c++) {
             gameGrid.gridSlots[c][5].occupiedBy = 'null';
         }
+        selectedSlot = -1;
         generateScreen(gameGrid);
     }
 }
 
 onmousemove = mouseIsInGrid;
 
-// Teste Animacao
-//var i = 0, j = 6;
-//function teste(){
-//    if(j>0){
-//        j--;
-//    }
-//    else { j = 6;
-//    }
-//    gameGrid[i][j+1].occupiedBy = 'null';
-//    gameGrid[i][j].occupiedBy = 'Red';
-//    generateScreen(gameGrid);
-//}
-// setInterval(teste, 500);
+screen.onclick = mouseIsClicked;
+
+
+function mouseIsClicked() {
+    // Needs fix on multiple clicking at the same time bug
+    var clickedSlot = selectedSlot;
+    if (clickedSlot >= 0) {
+        var actualRow = 4;
+        var toRow = findFirstOccupiedRow(clickedSlot);
+        console.log(toRow);
+        if (gameGrid.gridSlots[clickedSlot][actualRow].occupiedBy != null) {
+            console.log("B");
+        } else {
+            const animationFunction = setInterval(() => {
+                console.log(actualRow);
+                gameGrid.gridSlots[clickedSlot][actualRow].occupiedBy = "Red";
+                gameGrid.gridSlots[clickedSlot][actualRow+1].occupiedBy = null;
+                generateScreen(gameGrid);
+
+                actualRow--;
+                if (actualRow < toRow) {
+                    clearInterval(animationFunction);
+                }
+            }, 200)
+        }
+    }
+}
+
+function findFirstOccupiedRow(searchSlot) {
+    for(let i = 4; i > 0; i--){
+        if(gameGrid.gridSlots[searchSlot][i-1].occupiedBy == 'Red'){
+            return i;
+        }
+    }
+    return 0;
+}
 
