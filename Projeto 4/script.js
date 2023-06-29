@@ -1,25 +1,23 @@
-// Create an object with the form data
-const formData = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    message: "Hello, I'm submitting the form using an API.",
-  };
-  
-  // Make a POST request to the Google Form URL
-  fetch("https://docs.google.com/forms/d/e/FORM_ID/formResponse", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams(formData).toString(),
-  })
-    .then((response) => {
-      if (response.ok) {
-        console.log("Form submitted successfully!");
-      } else {
-        console.error("Error submitting the form.");
+$(document).ready(function() {
+  $('#formId').submit(function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Send the form data using AJAX
+    $.ajax({
+      url: googleFormsUrl,
+      method: 'POST',
+      data: $(this).serialize(),
+      success: function(response) {
+        // Handle the success response
+      },
+      error: function(xhr, status, error) {
+        // Handle any errors
       }
-    })
-    .catch((error) => {
-      console.error("Error submitting the form:", error);
     });
+
+    // Optionally, you can perform any other actions or show a success message on the page
+
+    // Clear the form fields if needed
+    $(this).trigger('reset');
+  });
+});

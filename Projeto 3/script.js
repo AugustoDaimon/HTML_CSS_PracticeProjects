@@ -57,8 +57,8 @@ class slot {
     }
 
     drawSlot() {
-        if (this.occupiedBy == null) {
-            this.context.fillStyle = '#949494';
+        if (this.occupiedBy == 'Yellow') {
+            this.context.fillStyle = 'Yellow';
         } else {
             if (this.occupiedBy == 'Red') {
                 this.context.fillStyle = 'Red';
@@ -85,72 +85,120 @@ var gameGrid = new grid(horizontalMargin, verticalMargin, slotSize, spaceBetween
 generateScreen(gameGrid);
 
 var selectedSlot = -1;
+var turnColorIsRed;
+var turnCount = 0;
+
+function returnTurnColor(nTurn) {
+    if (nTurn % 2 == 0) {
+        return 'Red';
+    } else {
+        return 'Yellow';
+    }
+}
 
 function mouseIsInGrid(evento) {
     var x = evento.pageX - screen.offsetLeft + screen.width / 2;
     var y = evento.pageY - screen.offsetTop + screen.height / 2;
     //console.log(x,y);
+    if (!inAnimation)
+        if ((x > horizontalMargin) && (x < screen.width - horizontalMargin) &&
+            (y > verticalMargin) && (y < screen.height - verticalMargin)) {
 
-    if ((x > horizontalMargin) && (x < screen.width - horizontalMargin) &&
-        (y > verticalMargin) && (y < screen.height - verticalMargin)) {
+            for (let c = 0; c < 7; c++) {
+                if ((x > (gameGrid.gridSlots[c][5].centerX - gameGrid.gridSlots[c][5].radius)) &&
+                    (x < (gameGrid.gridSlots[c][5].centerX + gameGrid.gridSlots[c][5].radius))) {
 
-        for (let c = 0; c < 7; c++) {
-            if ((x > (gameGrid.gridSlots[c][5].centerX - gameGrid.gridSlots[c][5].radius)) &&
-                (x < (gameGrid.gridSlots[c][5].centerX + gameGrid.gridSlots[c][5].radius))) {
-
-                gameGrid.gridSlots[c][5].occupiedBy = 'Red';
-                generateScreen(gameGrid);
-                selectedSlot = c;
-            } else {
-                gameGrid.gridSlots[c][5].occupiedBy = 'null';
-                generateScreen(gameGrid);
+                    gameGrid.gridSlots[c][5].occupiedBy = returnTurnColor(turnCount);
+                    generateScreen(gameGrid);
+                    selectedSlot = c;
+                } else {
+                    gameGrid.gridSlots[c][5].occupiedBy = 'null';
+                    generateScreen(gameGrid);
+                }
             }
+        } else {
+            for (let c = 0; c < 7; c++) {
+                gameGrid.gridSlots[c][5].occupiedBy = 'null';
+            }
+            selectedSlot = -1;
+            generateScreen(gameGrid);
         }
-    } else {
-        for (let c = 0; c < 7; c++) {
-            gameGrid.gridSlots[c][5].occupiedBy = 'null';
-        }
-        selectedSlot = -1;
-        generateScreen(gameGrid);
-    }
 }
 
 onmousemove = mouseIsInGrid;
 
 screen.onclick = mouseIsClicked;
 
+var inAnimation;
 
 function mouseIsClicked() {
     // Needs fix on multiple clicking at the same time bug
     var clickedSlot = selectedSlot;
-    if (clickedSlot >= 0) {
+    if (clickedSlot >= 0 && !inAnimation) {
         var actualRow = 4;
         var toRow = findFirstOccupiedRow(clickedSlot);
-        console.log(toRow);
+        //console.log(toRow);
         if (gameGrid.gridSlots[clickedSlot][actualRow].occupiedBy != null) {
-            console.log("B");
+            //console.log("B");
         } else {
+            inAnimation = true;
             const animationFunction = setInterval(() => {
-                console.log(actualRow);
-                gameGrid.gridSlots[clickedSlot][actualRow].occupiedBy = "Red";
-                gameGrid.gridSlots[clickedSlot][actualRow+1].occupiedBy = null;
+                //console.log(actualRow);
+                gameGrid.gridSlots[clickedSlot][actualRow].occupiedBy = returnTurnColor(turnCount);
+                gameGrid.gridSlots[clickedSlot][actualRow + 1].occupiedBy = null;
                 generateScreen(gameGrid);
 
                 actualRow--;
                 if (actualRow < toRow) {
                     clearInterval(animationFunction);
+                    checkingForWin(clickedSlot, toRow);
+                    inAnimation = false;
+                    turnCount++;
                 }
-            }, 200)
+            }, 150)
         }
     }
 }
 
 function findFirstOccupiedRow(searchSlot) {
-    for(let i = 4; i > 0; i--){
-        if(gameGrid.gridSlots[searchSlot][i-1].occupiedBy == 'Red'){
+    for (let i = 4; i > 0; i--) {
+        if (gameGrid.gridSlots[searchSlot][i - 1].occupiedBy != null) {
             return i;
         }
     }
     return 0;
 }
 
+function checkingForWin(lastPieceColumn, lastPieceRow) {
+    console.log(lastPieceColumn, lastPieceRow);
+    var x = lastPieceColumn;
+    var y = lastPieceRow;
+
+    if (x == 0) {
+
+    }
+    if (x == 7) {
+
+    }
+    if (y == 0) {
+
+    }
+    if (y == 5) {
+
+    }
+}
+
+function searchConnectedFour(searchX, searchY, directionX, directionY) {
+    var x = searchX, y = searchY;
+    var connectedPieces = 1, countedPieces = 1;
+
+    while (countedPieces < 4) {
+        x += directionX;
+        y += directionY;
+
+        if (gameGrid.gridSlots[x][y].occupiedBy != null) {
+            connectedPieces++;
+        }
+        countedPieces++;
+    }
+}

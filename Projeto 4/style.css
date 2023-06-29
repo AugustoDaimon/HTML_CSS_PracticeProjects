@@ -1,0 +1,21 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 97vh;
+    flex-direction: column; 
+}
+
+
+.mainDiv {
+    position:relative;
+
+    width: 80vw;
+    height: 40vw;
+    background-color: black;
+    border-radius: 15px;
+}
+
+.mainForm {
+
+}
