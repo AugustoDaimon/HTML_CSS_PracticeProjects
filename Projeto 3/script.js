@@ -169,36 +169,68 @@ function findFirstOccupiedRow(searchSlot) {
     return 0;
 }
 
+const directionsSearch = [
+    [-1,1] , [0,1], [1,1],
+    [-1,0] , [1,0],
+    [-1,-1], [0,-1], [1,-1]
+]
+
 function checkingForWin(lastPieceColumn, lastPieceRow) {
     console.log(lastPieceColumn, lastPieceRow);
-    var x = lastPieceColumn;
-    var y = lastPieceRow;
 
-    if (x == 0) {
-
-    }
-    if (x == 7) {
-
-    }
-    if (y == 0) {
-
-    }
-    if (y == 5) {
-
+    for (let i = 0; i < directionsSearch.length; i++) {
+        if(searchConnectedFour(lastPieceColumn, lastPieceRow, 
+            directionsSearch[i][0], directionsSearch[i][1], 1) >= 4){
+                console.log("WIN");
+                break;
+            }
     }
 }
 
-function searchConnectedFour(searchX, searchY, directionX, directionY) {
+// Código bem instavel e com riscos de bugs que podem passar despercebidos
+// Não cheguei a pensar para diagonal mas na busca horizontal, se fazer a busca reversa assim
+// que se deparar com occupiedBy diferente de returnTurnColor, da para fazer apenas duas buscas
+// sendo elas 1,0 e 0,1
+function searchConnectedFour(searchX, searchY, directionX, directionY, countedPieces) {
     var x = searchX, y = searchY;
-    var connectedPieces = 1, countedPieces = 1;
+    var connectedPieces = 0;
 
-    while (countedPieces < 4) {
-        x += directionX;
-        y += directionY;
+    while (countedPieces <= 4) {
+        countedPieces++;
 
-        if (gameGrid.gridSlots[x][y].occupiedBy != null) {
+        console.log(x,y);
+
+        if (gameGrid.gridSlots[x][y].occupiedBy == returnTurnColor(turnCount)) {
             connectedPieces++;
         }
-        countedPieces++;
+
+        // Vertical or Horizontal Search
+        if(directionX == 0 || directionY == 0){
+            if (x + directionX >= 0 && x + directionX < 7){
+                // Horizontal Search          
+                // console.log("Pesquisa Horizontal");
+                x += directionX;
+            }
+            else {
+                // When reach the end searchs the way back
+                connectedPieces += searchConnectedFour(searchX-directionX, searchY, -directionX, directionY, countedPieces)
+                break;
+            }
+
+            // Codigo escrito duas vezes
+            if (y + directionY >= 0 && y + directionY < 5)
+                y += directionY;
+            else {
+                connectedPieces += searchConnectedFour(searchX, searchY-directionY, directionX, -directionY,countedPieces)
+                break;
+            }
+        }else{
+            console.log("DIAGONAL");
+            return 1;
+        }
+
     }
+
+    console.log("Conectados: " + connectedPieces)
+    return connectedPieces;
 }
